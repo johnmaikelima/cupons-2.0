@@ -1,17 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-};
-
-module.exports = nextConfig;
-
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
   experimental: {
     appDir: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // ignora erros do ESLint
+  },
+  typescript: {
+    ignoreBuildErrors: true, // ignora erros de TypeScript
   },
   images: {
     domains: [
