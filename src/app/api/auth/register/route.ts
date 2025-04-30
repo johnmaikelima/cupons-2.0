@@ -3,13 +3,13 @@ import bcrypt from 'bcryptjs';
 import { User } from '@/models/User';
 import connectDB from '@/lib/mongodb';
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
   try {
-    const { email, password } = await req.json();
+    const { email, password } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json(
-        { message: 'Email e senha são obrigatórios' },
+        { error: 'Email e senha são obrigatórios' },
         { status: 400 }
       );
     }
@@ -17,10 +17,12 @@ export async function POST(req: Request) {
     await connectDB();
 
     // Verifica se já existe algum usuário admin
-    const existingAdmin = await User.findOne({ isAdmin: true });
-    if (existingAdmin) {
+    const adminExists = await User.findOne({ isAdmin: true });
+
+    // Se já existe um admin, não permite criar outro
+    if (adminExists) {
       return NextResponse.json(
-        { message: 'Já existe um usuário administrador' },
+        { error: 'Já existe um usuário administrador' },
         { status: 400 }
       );
     }
@@ -29,7 +31,7 @@ export async function POST(req: Request) {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
-        { message: 'Este email já está em uso' },
+        { error: 'Email já está em uso' },
         { status: 400 }
       );
     }
@@ -41,17 +43,18 @@ export async function POST(req: Request) {
     const user = await User.create({
       email,
       password: hashedPassword,
-      isAdmin: true,
+      isAdmin: true, // Primeiro usuário sempre será admin
     });
 
-    return NextResponse.json(
-      { message: 'Usuário admin criado com sucesso' },
-      { status: 201 }
-    );
-  } catch (error: any) {
+    return NextResponse.json({
+      id: user._id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } catch (error) {
     console.error('Erro ao registrar usuário:', error);
     return NextResponse.json(
-      { message: 'Erro ao criar usuário' },
+      { error: 'Erro ao criar usuário' },
       { status: 500 }
     );
   }

@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Toaster } from 'react-hot-toast';
+import AuthProvider from '@/components/providers/SessionProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
-        <Header />
-        {children}
-        <Footer />
-        <Toaster position="bottom-right" />
+        <AuthProvider>
+          <Header />
+          {children}
+          <Footer />
+          <Toaster position="bottom-right" />
+        </AuthProvider>
       </body>
     </html>
   );
