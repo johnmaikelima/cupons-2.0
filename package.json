@@ -1,3 +1,8 @@
+"scripts": {
+  "lint:fix": "eslint . --ext .ts,.tsx --fix"
+}
+
+
 {
   "name": "cupons",
   "version": "0.1.0",
