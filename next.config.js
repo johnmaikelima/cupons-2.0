@@ -3,7 +3,8 @@ const nextConfig = {
   images: {
     domains: [
       'www.lomadee.com',
-      'www.google.com'
+      'www.google.com',
+      'www.cartacapital.com.br'
     ],
   },
   webpack: (config) => {
