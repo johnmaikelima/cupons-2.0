@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    appDir: true,
+  },
   images: {
     domains: [
+      'www.cartacapital.com.br',
       'www.lomadee.com',
-      'www.google.com'
+      'lomadee.com'
     ],
   },
   webpack: (config) => {
